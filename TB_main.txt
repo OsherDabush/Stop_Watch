@@ -1,0 +1,53 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity TB_Digits is
+--  Port ( );
+end TB_Digits;
+
+architecture Behavioral of TB_Digits is
+component Digits
+     Port ( S : in STD_LOGIC; -- enabling input ('1' is on, '0' is off)
+           RST : in STD_LOGIC; -- reset input ('1' is reset, '0' does not change count)
+           CLK : in STD_LOGIC; -- clock input used for counter
+           N : out STD_LOGIC; -- output that becomes the input clock of the next digit
+           D : out STD_LOGIC_VECTOR ( 3 downto 0 ) ); -- binary value of the digit
+end component;
+
+signal CLK : std_logic := '0';
+signal S, RST : std_logic;
+signal N :  std_logic;
+signal D : STD_LOGIC_VECTOR ( 3 downto 0 );
+
+begin
+
+C1: Digits port map(S=>S, RST=>RST, CLK=>CLK, N=>N, D=>D);
+
+
+process
+begin
+    clk <= not clk;
+    wait for 5ns;
+end process;
+
+process
+begin
+    rst <= '0';
+    wait for 350ns;
+    rst <= '1';
+    wait for 20ns;
+    rst <= '0';
+    wait for 250ns;
+end process;
+
+process
+begin
+    S <= '1';
+    wait for 300ns;
+    S <= '0';
+    wait for 20ns;
+    S <= '1';
+    wait;
+end process;
+end Behavioral;
